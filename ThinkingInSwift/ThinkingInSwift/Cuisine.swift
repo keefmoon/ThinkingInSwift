@@ -23,7 +23,7 @@
 //  THE SOFTWARE.
 //
 
-enum Cuisine: Int {
+enum Cuisine: Int, CaseCountable {
     
     case american
     case bangladeshi
@@ -58,53 +58,19 @@ enum Cuisine: Int {
     case thai
     case turkish
     
-    
-    
     init?(string: String) {
         
-        guard let index = Cuisine.stringValues.index(of: string), let cuisine = Cuisine(rawValue: index) else {
-            return nil
+        for index in 0..<Cuisine.caseCount {
+            
+            if let cuisine = Cuisine(rawValue: index), cuisine.displayString == string {
+                self = cuisine
+                return
+            }
         }
-        self = cuisine
+        return nil
     }
     
     var displayString: String {
-        return Cuisine.stringValues[rawValue]
-    }
-    
-    private static var stringValues: [String] {
-        
-        return ["American",
-                "Bangladeshi",
-                "Breakfast",
-                "British",
-                "Burgers",
-                "Caribbean",
-                "Chicken",
-                "Chinese",
-                "Curry",
-                "Desserts",
-                "English",
-                "European",
-                "Gourmet",
-                "Grill",
-                "Halal",
-                "Indian",
-                "Italian",
-                "Jamaican",
-                "Japanese",
-                "Kebab",
-                "Mexican",
-                "Milkshakes",
-                "Nepalese",
-                "Oriental",
-                "Peri Peri",
-                "Pizza",
-                "Polish",
-                "Sandwiches",
-                "Spanish",
-                "Sushi",
-                "Thai",
-                "Turkish"]
+        return String(describing: self).capitalized
     }
 }
