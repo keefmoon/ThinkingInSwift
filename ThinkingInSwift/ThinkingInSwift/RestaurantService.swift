@@ -26,6 +26,16 @@
 import Foundation
 import Dispatch
 
+enum RestaurantResult {
+    
+    case success([Restaurant])
+    case failure(Error)
+}
+
+enum RestaurantServiceError: Error {
+    case noDataReturned
+}
+
 class RestaurantService {
     
     var session: URLSession = {
@@ -38,7 +48,7 @@ class RestaurantService {
     var requestBuilder = RequestBuilder()
     var deserialiser = RestaurantDeserialiser()
     
-    func fetchRestaurants(for postcode: String, completeHandler: @escaping ([Restaurant]?, Error?) -> Void) {
+    func fetchRestaurants(for postcode: String, completeHandler: @escaping (RestaurantResult) -> Void) {
         
         let request = requestBuilder.buildRestaurantsRequest(for: postcode)
         
@@ -46,31 +56,34 @@ class RestaurantService {
             
             guard let `self` = self else { return }
             
-            if let error = error {
+            switch (data, response, error) {
                 
-                DispatchQueue.main.async {
-                    completeHandler(nil, error)
-                }
-                
-            } else if let data = data {
-                
+            case (let data?, _, nil):
                 do {
                     let restaurants = try self.deserialiser.deserialiseRestaurants(with: data)
                     
                     DispatchQueue.main.async {
-                        completeHandler(restaurants, nil)
+                        completeHandler(.success(restaurants))
                     }
                     
                 } catch {
                     
                     DispatchQueue.main.async {
-                        completeHandler(nil, error)
+                        completeHandler(.failure(error))
                     }
                 }
+                
+            case (_, _, let error?):
+                DispatchQueue.main.async {
+                    completeHandler(.failure(error))
+                }
+                
+            case (nil, _, nil):
+                DispatchQueue.main.async {
+                    completeHandler(.failure(RestaurantServiceError.noDataReturned))
+                }
             }
-            
         }
         dataTask.resume()
     }
-    
 }

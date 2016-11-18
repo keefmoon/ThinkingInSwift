@@ -103,16 +103,18 @@ extension RestaurantsViewController: UITextFieldDelegate {
         
         guard let postcode = currentFilter.postcode else { return true }
         
-        restaurantService.fetchRestaurants(for: postcode) { [weak self] (fetchedRestaurants, error) in
+        restaurantService.fetchRestaurants(for: postcode) { [weak self] result in
             
-            if let fetchedRestaurants = fetchedRestaurants {
+            guard let `self` = self else { return }
+            
+            switch result {
                 
-                self?.allRestaurants = fetchedRestaurants
-                self?.visibleRestaurants = fetchedRestaurants
-                self?.tableView.reloadData()
+            case .success(let fetchedRestaurants):
+                self.allRestaurants = fetchedRestaurants
+                self.visibleRestaurants = fetchedRestaurants
+                self.tableView.reloadData()
                 
-            } else if let error = error {
-                
+            case .failure(let error):
                 // Handle Error
                 print(error)
             }
