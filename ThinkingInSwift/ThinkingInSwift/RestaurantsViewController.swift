@@ -27,6 +27,11 @@ import UIKit
 
 class RestaurantsViewController: UIViewController {
     
+    enum SegueType: String {
+        case showCuisinePicker
+        case showBasket
+    }
+    
     @IBOutlet fileprivate var tableView: UITableView!
     @IBOutlet fileprivate var postcodeField: UITextField!
     @IBOutlet fileprivate var cuisineBarButtonItem: UIBarButtonItem!
@@ -39,22 +44,22 @@ class RestaurantsViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if  let identifier = segue.identifier,
-            identifier == "showCuisinePicker",
-            let nav = segue.destination as? UINavigationController,
-            let cuisinePickerVC = nav.topViewController as? CuisinePickerViewController {
+        guard let identifier = segue.identifier, let segueType = SegueType(rawValue: identifier) else { return }
+        
+        let relevantVC = segue.destination.relevant
+        
+        switch (segueType, relevantVC, sender) {
             
+        case (.showCuisinePicker, let cuisinePickerVC as CuisinePickerViewController, _):
             cuisinePickerVC.filter = currentFilter
             
-        } else if
-            let identifier = segue.identifier,
-            identifier == "showBasket",
-            let nav = segue.destination as? UINavigationController,
-            let basketVC = nav.topViewController as? BasketViewController,
-            let cell = sender as? RestaurantCell {
-            
+        case (.showBasket, let basketVC as BasketViewController, let cell as RestaurantCell):
             guard let indexPath = tableView.indexPath(for: cell) else { return }
             basketVC.restaurant = visibleRestaurants[indexPath.row]
+            
+        default:
+            break
+            
         }
     }
     
