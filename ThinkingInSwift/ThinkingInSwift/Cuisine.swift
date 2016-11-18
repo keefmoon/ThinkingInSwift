@@ -52,6 +52,7 @@ enum Cuisine: Int, CaseCountable {
     case periPeri
     case pizza
     case polish
+    case russian
     case sandwiches
     case spanish
     case sushi
