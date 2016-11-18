@@ -26,9 +26,9 @@
 import Foundation
 import Dispatch
 
-enum RestaurantResult {
+enum NetworkResult<SuccessfulResultType> {
     
-    case success([Restaurant])
+    case success(SuccessfulResultType)
     case failure(Error)
 }
 
@@ -48,7 +48,7 @@ class RestaurantService {
     var requestBuilder = RequestBuilder()
     var deserialiser = RestaurantDeserialiser()
     
-    func fetchRestaurants(for postcode: String, completeHandler: @escaping (RestaurantResult) -> Void) {
+    func fetchRestaurants(for postcode: String, completeHandler: @escaping (NetworkResult<[Restaurant]>) -> Void) {
         
         let request = requestBuilder.buildRestaurantsRequest(for: postcode)
         
