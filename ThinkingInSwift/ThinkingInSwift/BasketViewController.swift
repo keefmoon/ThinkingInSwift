@@ -65,7 +65,7 @@ class BasketViewController: UIViewController {
         availableItems = basketItemService.basketItems(for: restaurant)
         discountVouchers = discountVoucherService.discountVouchers()
         
-        tableView.register(BasketItemCell.self, forCellReuseIdentifier: "BasketItemCell")
+        tableView.register(BasketItemCell.self)
         updateTitle()
     }
     
@@ -101,8 +101,7 @@ extension BasketViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let basketItem = basketItems[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BasketItemCell", for: indexPath) as! BasketItemCell
-        
+        let cell: BasketItemCell = tableView.dequeue(forIndexPath: indexPath)
         cell.textLabel?.text = basketItem.name
         cell.detailTextLabel?.text = currencyFormatter.string(for: basketItem.price - basketItem.discount)
         return cell

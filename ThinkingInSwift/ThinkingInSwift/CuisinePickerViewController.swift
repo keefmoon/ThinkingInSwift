@@ -33,9 +33,7 @@ class CuisinePickerViewController: UITableViewController {
         super.viewDidLoad()
         
         // Register Cell
-        
-        let cellNib = UINib(nibName: "CuisineCell", bundle: nil)
-        tableView.register(cellNib, forCellReuseIdentifier: "CuisineCell")
+        tableView.register(CuisineCell.self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,7 +52,7 @@ class CuisinePickerViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CuisineCell", for: indexPath) as! CuisineCell
+        let cell: CuisineCell = tableView.dequeue(forIndexPath: indexPath)
         cell.textLabel?.text = Cuisine(rawValue: indexPath.row)?.displayString
         return cell
     }

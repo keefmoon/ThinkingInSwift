@@ -87,7 +87,7 @@ extension RestaurantsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let restaurant = visibleRestaurants[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RestaurantCell", for: indexPath) as! RestaurantCell
+        let cell: RestaurantCell = tableView.dequeue(forIndexPath: indexPath)
         cell.textLabel?.text = restaurant.name
         cell.detailTextLabel?.text = restaurant.cuisineDisplayString
         
