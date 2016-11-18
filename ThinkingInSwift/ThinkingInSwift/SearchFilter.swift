@@ -23,8 +23,7 @@
 //  THE SOFTWARE.
 //
 
-// TODO: Should be a class
-struct SearchFilter {
+class SearchFilter {
     
     var postcode: String?
     var cuisine: Cuisine?
