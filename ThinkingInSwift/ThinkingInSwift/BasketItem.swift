@@ -23,8 +23,7 @@
 //  THE SOFTWARE.
 //
 
-// TODO: Should be a struct
-class BasketItem {
+struct BasketItem {
     
     let name: String
     let price: Double
@@ -36,7 +35,7 @@ class BasketItem {
         self.discount = 0
     }
     
-    func apply(discountVoucher: DiscountVoucher) {
+    mutating func apply(discountVoucher: DiscountVoucher) {
         discount = (discountVoucher.percentage * 0.01) * price
         discountVoucher.used = true
     }
