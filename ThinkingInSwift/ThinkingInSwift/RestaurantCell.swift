@@ -25,7 +25,7 @@
 
 import UIKit
 
-class RestaurantCell: UITableViewCell {
+class RestaurantCell: UITableViewCell, TableViewDequeuable {
     
     
 }

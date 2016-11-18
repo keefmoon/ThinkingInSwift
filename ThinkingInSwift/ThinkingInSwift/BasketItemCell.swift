@@ -25,7 +25,7 @@
 
 import UIKit
 
-class BasketItemCell: UITableViewCell {
+class BasketItemCell: UITableViewCell, TableViewRegisterable {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)

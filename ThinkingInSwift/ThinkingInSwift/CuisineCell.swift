@@ -25,7 +25,7 @@
 
 import UIKit
 
-final class CuisineCell: UITableViewCell {
+final class CuisineCell: UITableViewCell, NibLoadable, TableViewRegisterable {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         accessoryType = selected ? .checkmark: .none
